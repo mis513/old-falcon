@@ -1,0 +1,243 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Export Loading Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Roboto', 'sans-serif'],
+          },
+        },
+      },
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wdth,wght@0,75..100,100..900;1,75..100,100..900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --font-roboto: "Roboto", sans-serif;
+    }
+    * {
+      font-family: var(--font-roboto) !important;
+      font-optical-sizing: auto;
+    }
+    .roboto-custom {
+      font-family: "Roboto", sans-serif;
+      font-optical-sizing: auto;
+      font-weight: 400;
+      font-style: normal;
+    }
+    body {
+      font-family: "Roboto", sans-serif;
+      font-optical-sizing: auto;
+      font-weight: 400;
+      font-style: normal;
+      background-color: #f3f4f6;
+      letter-spacing: 0.3px;
+    }
+    h1, h2, h3 {
+      letter-spacing: 0.5px;
+    }
+    button {
+      display: inline-flex !important;
+      flex-direction: row !important;
+      align-items: center !important;
+      justify-content: center !important;
+      padding: 6px 12px !important;
+      height: 38px !important;
+      font-size: 14px !important;
+      gap: 4px !important;
+      line-height: 1 !important;
+    }
+    button.flex-col {
+      flex-direction: column !important;
+    }
+    button .flex, button .inline-flex {
+      gap: 4px !important;
+    }
+    button svg {
+      width: 16px !important;
+      height: 16px !important;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fadeIn {
+      animation: fadeIn 0.3s ease-out forwards;
+    }
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-slideDown {
+      animation: slideDown 0.3s ease-out forwards;
+    }
+    @keyframes slideInRight {
+      from { transform: translateX(100%); }
+      to { transform: translateX(0); }
+    }
+    .animate-slideInRight {
+      animation: slideInRight 0.3s ease-out forwards;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #e2e8f0;
+      border-radius: 10px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: #cbd5e1;
+    }
+
+    /* PDF/Image Export Template Styles */
+    .fixed-print-container {
+      width: 794px !important;
+      min-height: 1123px !important;
+      background-color: white !important;
+      padding: 20px !important;
+      box-sizing: border-box !important;
+      position: fixed !important;
+      left: -9999px !important;
+      top: 0 !important;
+      color: #000 !important;
+      display: flex !important;
+      flex-direction: column !important;
+    }
+
+    .export-a4-container {
+      width: 1000px !important;
+      min-height: 1414px !important;
+      background-color: white !important;
+      display: flex !important;
+      flex-direction: column !important;
+      padding: 30px !important;
+      box-sizing: border-box !important;
+      position: fixed !important;
+      left: -9999px !important;
+      top: 0 !important;
+      color: #000 !important;
+    }
+
+    .export-header {
+      display: flex !important;
+      align-items: center !important;
+      gap: 12px !important;
+      padding-bottom: 8px !important;
+    }
+
+    .export-header-logo {
+      height: 60px !important;
+      width: 60px !important;
+      object-fit: contain !important;
+    }
+
+    .export-header-divider {
+      height: 20px !important;
+      width: 2px !important;
+      background-color: #0369a1 !important;
+    }
+
+    .export-header-title {
+      font-size: 18px !important;
+      font-weight: 900 !important;
+      color: #000 !important;
+      margin: 0 !important;
+      text-transform: uppercase !important;
+    }
+
+    .export-section-grid {
+      display: grid !important;
+      gap: 12px 20px !important;
+      margin: 12px 0 !important;
+    }
+
+    .export-field {
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 2px !important;
+    }
+
+    .export-label {
+      font-size: 11px !important;
+      font-weight: 900 !important;
+      color: #7f1d1d !important; /* dark red/maroon */
+      text-transform: uppercase !important;
+    }
+
+    .export-value {
+      font-size: 13px !important;
+      font-weight: 900 !important;
+      color: #000 !important;
+      min-height: 16px !important;
+    }
+
+    .export-divider-blue {
+      border-bottom: 2px solid #0369a1 !important;
+      margin: 8px 0 !important;
+    }
+
+    .export-divider-red {
+      border-bottom: 3px solid #7f1d1d !important;
+      margin: 12px 0 !important;
+    }
+
+    .export-footer {
+      margin-top: auto !important;
+      padding-top: 12px !important;
+      text-align: center !important;
+    }
+
+    .export-footer-text {
+      font-size: 12px !important;
+      font-weight: 900 !important;
+      color: #000 !important;
+      text-transform: uppercase !important;
+      letter-spacing: 0.05em !important;
+    }
+    @media print {
+      body {
+        margin: 0.5cm !important;
+        background-color: white !important;
+      }
+      @page {
+        margin: 0.5cm;
+      }
+      .no-print {
+        display: none !important;
+      }
+    }
+  </style>
+<script type="importmap">
+{
+  "imports": {
+    "react/": "https://esm.sh/react@^19.2.4/",
+    "react": "https://esm.sh/react@^19.2.4",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
+    "@google/genai": "https://esm.sh/@google/genai@^1.40.0",
+    "lucide-react": "https://esm.sh/lucide-react@^0.563.0",
+    "papaparse": "https://esm.sh/papaparse@^5.4.1",
+    "html2canvas": "https://esm.sh/html2canvas@^1.4.1",
+    "jspdf": "https://esm.sh/jspdf@^2.5.1",
+    "jspdf-autotable": "https://esm.sh/jspdf-autotable@^3.8.2"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+<body>
+  <div id="root"></div>
+<script type="module" src="/index.tsx"></script>
+</body>
+</html>

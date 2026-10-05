@@ -1,0 +1,7 @@
+{
+  "name": "Export Item Loading Dashboard",
+  "description": "A professional real-time dashboard for managing rice export loading data, synchronized with spreadsheet data for inventory, billing, and loading logistics tracking.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
